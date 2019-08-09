@@ -9,7 +9,7 @@ import NotePageMain from '../NotePageMain/NotePageMain';
 import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import EditNote from '../EditNote/EditNote';
-import EditFolderForm from'../EditFolderForm/EditFolderForm';
+import EditFolder from '../EditFolder/EditFolder';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css'
@@ -18,7 +18,14 @@ class App extends Component {
 
     state = {
         folders: [],
-        // notes: []
+        notes: [
+            {id: 8,
+            name: "Wolves"},
+            {id: 4, 
+            name: "Birds"},
+            {id: 5, name: "Bears"}
+
+        ]
     }
 
     addFolder = folder => {
@@ -48,18 +55,7 @@ class App extends Component {
         })
     };
 
-    // updateNote = editedNote  => {
-    //     const newNotes = this.state.map(note =>
-    //         (note.id === editedNote.id)
-    //         ? editedNote
-    //         : note
-    //         )
-    //     this.setState({
-    //         notes: newNotes
-    //     })
-    // }
-
-    updateFolder = editedNote  => {
+    updateNote = editedNote  => {
         const newNotes = this.state.map(note =>
             (note.id === editedNote.id)
             ? editedNote
@@ -69,6 +65,30 @@ class App extends Component {
             notes: newNotes
         })
     }
+
+    updateFolder = updatedFolder => {
+        const newFolders = this.state.folders.map(folder =>
+          (folder.id === updatedFolder.id)
+            ? updatedFolder
+            : folder
+        )
+        this.setState({
+        folders: newFolders
+        })
+    };
+
+    handleDeleteNote = noteId => {
+        this.setState({
+            notes: this.state.notes.filter(note => note.id !== noteId)
+        });
+        this.props.history.push(`/`)
+    };
+
+    handleDeleteFolder = folderId => {
+        this.setState({
+            folders: this.state.folders.filter(folder => folder.id !== folderId)
+        });
+    };
   
     componentDidMount() {
         Promise.all([
@@ -95,20 +115,6 @@ class App extends Component {
             });
     };
 
-
-    // handleDeleteNote = noteId => {
-    //     this.setState({
-    //         : this.state.notes.filter(note => note.id !== noteId)
-    //     });
-    //     this.props.history.push(`/`)
-    // };
-
-    handleDeleteFolder = folderId => {
-        this.setState({
-            folders: this.state.folders.filter(folder => folder.id !== folderId)
-        });
-    };
-
     renderNavRoutes() {
         return (
             <>
@@ -129,6 +135,7 @@ class App extends Component {
     }
 
     renderMainRoutes() {
+        const noteId = this.state.notes[0].id
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -147,7 +154,8 @@ class App extends Component {
                 <Route path='/add-folder' 
                     render={(history) =>
                 <AddFolder
-                    addNewFolder={this.addNewFolder}
+                    addFolder={this.addFolder}
+                    folders ={this.state.folders} 
                 />}
                 />
                <Route path='/add-note'
@@ -157,42 +165,31 @@ class App extends Component {
                         folders ={this.state.folders} 
                     /> }
                 />
-                <Route path='/edit/:noteId'
-                    render={(history) =>
-                    <EditNote
-                        editNote = {this.EditNote}
-                        folders ={this.state.folders} 
-                    /> }
-                    />
+                <Route 
+                    path='/folders/:folderId/edit'
+                    component={EditFolder} 
+                    /> 
 
-                <Route path='/edit/:folderId'
-                    render={(history) =>
-                    <EditFolderForm
-                        editFolder = {this.EditFolder}
-                        folders ={this.state.folders} 
-                /> }
-            />          
+                <Route 
+                    path='notes/:noteId/edit'
+                    component={EditNote} 
+                    /> 
             </>
         );
     }
 
     render() {
-
-
-        console.log(this.state.folders)
-        console.log(this.state.folders.notes)
-        console.log(this.state.folders[0])
-
             const value = {
             folders: this.state.folders,
             notes: this.state.notes,
             deleteNote: this.handleDeleteNote,
             deleteFolder: this.handleDeleteFolder,
             addNote: this.addNote,
-            updateFolder: this.updateFolder
+            addFolder: this.addFolder,
+            updateFolder: this.updateFolder,
+            updateNote: this.updateNote
             };
-
-        
+       
         return (
             <ApiContext.Provider value={value}>
                 <div className="App">

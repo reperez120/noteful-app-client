@@ -7,9 +7,16 @@ import { withRouter } from 'react-router-dom';
 
 class AddFolder extends Component {
 
-  state = {
-    error: null,
-  };
+  // state = {
+  //   error: null,
+  // };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: ''
+    }
+  }
 
   handleFolderSubmit = e => {
     e.preventDefault()
@@ -18,7 +25,7 @@ class AddFolder extends Component {
       name: name.value
     }
     const url = 'http://localhost:8000/api/folders'
-    this.setState({ error:null })
+    
     const options = {
     method: 'POST',
     headers: {
@@ -26,6 +33,7 @@ class AddFolder extends Component {
     },
     body: JSON.stringify(folder),
     }
+    this.setState({ error: null })
     fetch(url, options)
       .then(res => {
         if(!res.ok) {
@@ -34,11 +42,7 @@ class AddFolder extends Component {
         return res.json();
       })
       .then(data => {
-        console.log(name)     
-        name.value = ''
-        console.log(name)
-        console.log(data)
-        this.props.addNewFolder(data);
+        this.props.addFolder(data);
         this.props.history.push('/')
       })
       .catch(err => {
@@ -73,7 +77,7 @@ class AddFolder extends Component {
 }
 
 AddFolder.propTypes = {
-  addNewFolder: PropTypes.func.isRequired,
+  addFolder: PropTypes.func.isRequired,
   folders: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired
   })) 

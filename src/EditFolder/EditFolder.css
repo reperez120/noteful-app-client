@@ -1,0 +1,35 @@
+.EditFolder {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+}
+
+.editButton {
+    height: 2rem;
+    margin-left: 11rem;
+    margin-top: 1rem;
+}
+
+.EditFolder {
+    display: flex;
+    flex-direction: column;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+   
+}
+
+label {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+input {
+    width: 10rem;
+    margin-left: 9rem;
+}

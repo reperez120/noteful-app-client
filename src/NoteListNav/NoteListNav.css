@@ -28,7 +28,9 @@
   max-width: 180px;
   padding: 8px 16px;
   text-decoration: none;
+  font-weight: bold;
 }
+
 .NoteListNav__folder-link:hover {
   color: black;
   cursor: pointer;
@@ -44,6 +46,13 @@
   font-size: 10px;
 }
 
+.editFolder {
+  font-size: .8rem;
+  margin-top: .55rem;
+  margin-left: 1rem;
+  font-weight: bold;
+}
+
 .buttons {
   display: flex;
 }
@@ -55,7 +64,7 @@ button {
   background-color: black;
   border: 0;
   color: #bdbcbc;
-  font-size: .5rem;
+  font-size: .8rem;
 }
 button {
   background-color:black;

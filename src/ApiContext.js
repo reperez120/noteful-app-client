@@ -1,28 +1,20 @@
 import React from 'react'
 
-export default React.createContext({
+const ApiContext =  React.createContext({
 
-  // updateArticle = updatedArticle => {
-  //      const newArticles = this.state.articles.map(art =>
-  //        (art.id === updatedArticle.id)
-  //          ? updatedArticle
-  //          : art
-  //      )
-  //      this.setState({
-  //       articles: newArticles
-  //      })
-  //   };
-
-render() {
-  const contextvalue = {
-  folders: [],
-  notes: [],
-  addFolder: () => {},
-  addNote: () => {},
-  deleteNote: () => {},
-  updateNote: () => {},
-  updateFolder: () => {},
-  deleteFolder: () => {}
+  render() {
+    const contextValue = {
+    folders: this.state.folders,
+    notes: [],
+    addFolder: this.addFolder,
+    addNote: this.addNote,
+    deleteNote: this.deleteNote,
+    updateNote: this.updateNote,
+    updateFolder:this.updateFolder,
+    deleteFolder: this.deleteFolder
+    }
   }
-}
+
 })
+
+export default ApiContext

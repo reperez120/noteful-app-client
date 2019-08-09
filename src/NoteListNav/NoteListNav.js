@@ -3,7 +3,9 @@ import { NavLink, Link } from 'react-router-dom'
 import AddButton from '../AddButton/AddButton'
 import ApiContext from '../ApiContext'
 import { countNotesForFolder } from '../notes-helpers'
+import EditFolder from'../EditFolder/EditFolder';
 import './NoteListNav.css'
+import PropTypes from 'prop-types'
 import config from '../config'
 
 export default class NoteListNav extends React.Component {
@@ -14,10 +16,8 @@ export default class NoteListNav extends React.Component {
   }
   static contextType = ApiContext;
 
-
-  handleClickDelete = e => {
+  handleClickDelete = (folderId, e) => {
     e.preventDefault()
-    const folderId = this.props.id
 
     fetch(`${config.API_ENDPOINT}/api/folders/${folderId}`, {
       method: 'DELETE'
@@ -34,27 +34,6 @@ export default class NoteListNav extends React.Component {
     .catch(error => {
       console.error({ error })
     })
-}
-
-handleClickEdit = e => {
-  e.preventDefault()
-  const folderId = this.props.id
-
-  fetch(`${config.API_ENDPOINT}/api/folders/folderId`, {
-    method: 'PATCH'
-  })
-  .then(res => {
-    console.log(res)
-    if (!res.ok)
-      return res.json().then(e => Promise.reject(e))
-    return res
-  })
-  .then(() => {
-    this.context.updateFolder(folderId)
-  })
-  .catch(error => {
-    console.error({ error })
-  })
 }
 
   render() {
@@ -78,18 +57,16 @@ handleClickEdit = e => {
                 <button
             className='Folder_delete'
             type='button'
-            onClick={this.handleClickDelete}
+            onClick={this.handleClickDelete.bind(null, folder.id)}
           >
           remove
           </button>
-
-          <button
-            className='Folder_edit'
-            type='button'
-            onClick={this.handleClickEdit}
-          >
+          <div className='editFolder'>
+          <Link to=
+          {`/folders/${folder.id}/edit`}>
           edit
-          </button>
+          </Link>
+          </div>
           </div>
               </NavLink>
             </li>
@@ -110,3 +87,10 @@ handleClickEdit = e => {
     )
   }
 }
+
+NoteListNav.propTypes = {
+  folder: PropTypes.objectOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })) 
+};

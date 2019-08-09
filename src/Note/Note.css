@@ -1,8 +1,7 @@
-
 .Note {
   --note-height: 88px;
   background-color: black;
-  color: #cacaca;
+  color: white;
   height: var(--note-height);
   margin-bottom: 8px;
   max-width: 380px;
@@ -10,25 +9,25 @@
   position: relative;
 }
 
-.Note__delete {
-  --note-button-height: 32px;
-  background-color: black;
-  border: 0;
-  color: #bdbcbc;
-  float: right;
-  font-size: 12px;
-  height: var(--note-button-height);
-  position: relative;
-  top: calc((var(--note-button-height) + 32px) * -1);
-  transform-origin: right bottom;
-  transform: rotate(-90deg);
-  width: calc(var(--note-height));
+.folderButtons {
+  display: flex;
+  align-items: center;
+  justify-content: left;
 }
-.Note__delete:hover {
-  background-color: white;
+
+.Note__delete {
+  background-color: black;
   color: white;
-  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
+  margin-left: 4.9rem;
+}
+
+.editNote {
+  display: flex;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: .6rem;
 }
 
 .Note__title {
@@ -37,21 +36,22 @@
   margin: 0;
   max-width: 80%;
   min-height: 24px;
+  margin-left: 1rem;
+  text-align: center;
 }
-.Note__title a {
-  color: #cacaca;
-  display: block;
-  text-decoration: none;
-}
+
 .Note__title a:hover {
   color: black;
 }
 
 .Note__dates {
   bottom: 8px;
-  color: #a7a5a5;
-  font-size: 14px;
-  position: absolute;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  margin-right: 2rem;
+  margin-top: .5rem;
+  margin-bottom: 5rem;
 }
 
 a {

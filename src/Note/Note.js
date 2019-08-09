@@ -11,14 +11,14 @@ export default class Note extends React.Component {
   static defaultProps ={
     folders: [],
     onDeleteNote: () => {},
+    onEditNote: () => {},
     notes: []
   }
   static contextType = ApiContext;
 
-  handleClickDelete = e => {
+  handleClickDelete = ( noteId, e) => {
     e.preventDefault()
-    const noteId = this.props.id
-
+  
     fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
       method: 'DELETE'
     })
@@ -36,10 +36,10 @@ export default class Note extends React.Component {
       })
   }
 
-
   render() {
-    const { name, id, content, modified } = this.props
-    console.log(this.props)
+    const { note, name, id, content, modified } = this.props
+    const { folders=[], notes=[] } = this.context
+   
     return (
       <div className='Note'>
         <h2 className='Note__title'>
@@ -47,6 +47,7 @@ export default class Note extends React.Component {
             {name}
           </Link>
         </h2>
+        <div className="folderButtons">
         <button
           className='Note__delete'
           type='button'
@@ -55,13 +56,16 @@ export default class Note extends React.Component {
           {' '}
           remove
         </button>
+        <div className='editNote'>
            <Link to=
-           {`/edit/:noteId`}>
-             Edit Note
+           {`/notes/${id}/edit`}>
+             edit
            </Link>
+        </div>
+        </div>
         <div className='Note__dates'>
           <div className='Note__dates-modified'>
-            Modified
+            modified:
             {' '}
             <span className='Date'>
               {format(modified, 'YYYY MMM Do')}

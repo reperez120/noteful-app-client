@@ -2,19 +2,20 @@ import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import AddButton from '../AddButton/AddButton'
 import ApiContext from '../ApiContext'
-import { countNotesForFolder } from '../notes-helpers'
-import EditFolder from'../EditFolder/EditFolder';
+import { countNotesForFolder} from '../notes-helpers';
 import './NoteListNav.css'
 import PropTypes from 'prop-types'
 import config from '../config'
 
 export default class NoteListNav extends React.Component {
-  static defaultProps ={
-    folders: [],
-    onDeleteFolder: () => {},
-    onEditFolder: () => {}
+  static defaultProps = {
+    folders: []
   }
   static contextType = ApiContext;
+
+  state = {
+    noteLength: null
+  }
 
   handleClickDelete = (folderId, e) => {
     e.preventDefault()
@@ -23,7 +24,6 @@ export default class NoteListNav extends React.Component {
       method: 'DELETE'
     })
     .then(res => {
-      console.log(res)
       if (!res.ok)
         return res.json().then(e => Promise.reject(e))
       return res
@@ -37,7 +37,8 @@ export default class NoteListNav extends React.Component {
 }
 
   render() {
-    const { folders=[], notes=[] } = this.context
+    const { folders=[],  notes=[] } = this.context
+    
     return (
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
@@ -48,11 +49,12 @@ export default class NoteListNav extends React.Component {
                 to={`/folder/${folder.id}`}
               >
                 <span className='NoteListNav__num-notes'>
-                  {countNotesForFolder(notes, folder.id)}
+                {countNotesForFolder(notes, folder.id)}
+                  {folder.notes.length}
                 </span>
                 {folder.name}
-                {/* {folder.notes.length} */}
-
+                <span className="Content">
+              </span>      
               <div className='buttons'>
                 <button
             className='Folder_delete'

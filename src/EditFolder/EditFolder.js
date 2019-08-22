@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './EditFolder.css';
 import ApiContext from '../ApiContext';
+import config from '../config'
 
 export default class EditFolder extends Component {
 
-    state = {
-        name: ""
-    }
+
+    static propTypes = {
+        match: PropTypes.shape({
+          params: PropTypes.object,
+        }),
+        history: PropTypes.shape({
+          push: PropTypes.func,
+        }).isRequired,
+      };
 
     static contextType = ApiContext
 
+    state = {
+        error: null,
+        name: ''
+      };
+    
     componentDidMount() {
 
-    const folderId = this.props.match.params.folderId
+    const folderId  = this.props.match.params.folderId
 
     fetch(`http://localhost:8000/api/folders/${folderId}`, { method: 'GET'})
         .then(res => {
@@ -33,35 +46,33 @@ export default class EditFolder extends Component {
         })
     }
 
+    handleNameChange = e => {
+        this.setState({ name: e.target.value })
+    };
+
     handleSubmit = e => {
         e.preventDefault()
-        const folderName = e.target.name.value
-        this.setState ({
-           name: folderName
-        })
 
-        console.log(this.state)
-
-        const folderId = this.props.match.params.folderId
-
+        const  folderId  = this.props.match.params.folderId
+        const  name  = this.state.name
+        const newFolder =  {name}
         const url = `http://localhost:8000/api/folders/${folderId}`
         const options = {
             method: 'PATCH',
              headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(this.state.inputValues)
+            body: JSON.stringify(newFolder)
         }
         fetch(url, options)
         .then(res => {
-        this.context.updateFolder(res)
         if(!res.ok) {
             throw new Error('Something went wrong, please try again later');
         }
-        return res.json();
         })  
-        .then(data => {
-            this.context.updateFolder(data)
+        .then (() => {
+            this.context.updateFolder(newFolder)
+            this.props.history.push('/')
         })
      .catch(err => {
         this.setState({
@@ -86,7 +97,7 @@ render() {
                     id='name' 
                     name='name'
                     defaultValue={name}
-                    // onChange={this.handleNameChange}
+                    onChange={this.handleNameChange}
                     />
             </div>
             <div className='buttons'>

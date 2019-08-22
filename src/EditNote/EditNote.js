@@ -1,129 +1,158 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './EditNote.css';
 import ApiContext from '../ApiContext';
-
+import config from '../config'
+ 
 export default class EditNote extends Component {
-
-    state = {
-        name: "",
-        content: "",
-        folder: ""
-    }
+    
+    static propTypes = {
+        match: PropTypes.shape({
+          params: PropTypes.object,
+        }),
+        history: PropTypes.shape({
+          push: PropTypes.func,
+        }).isRequired,
+      };
 
     static contextType = ApiContext
 
-    componentDidMount() {
-
-    const noteId = this.props.match.params.noteId
-
-    fetch(`http://localhost:8000/api/folders/${noteId}`, { method: 'GET'})
-        .then(res => {
-        if(!res.ok) {
-            throw new Error('Something went wrong, please try again later');
-        }
-        return res.json();
-        })  
-    .then(data => {
-         this.setState({
-                 name: data.name,
-                 content: data.content,
-                 folder: data.folder
-         })
-        })
-    .catch(err => {
-        this.setState({
-            error: err.message
-            });
-        })
-    }
-
-    handleSubmit = e => {
-        e.preventDefault()
-        const noteName = e.target.name.value
-        this.setState ({
-           name: noteName
-        })
-
-        console.log(this.state)
-
-        const noteId = this.props.match.params.noteId
-
-        const url = `http://localhost:8000/api/notes/${noteId}`
-        console.log(url)
-        const options = {
-            method: 'PATCH',
-             headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(this.state.inputValues)
-        }
-        fetch(url, options)
-        .then(res => {
-        this.context.updateNote(res)
-        if(!res.ok) {
-            throw new Error('Something went wrong, please try again later');
-        }
-        return res.json();
-        })  
-        .then(data => {
-            this.context.updateNote(data)
-        })
-     .catch(err => {
-        this.setState({
-            error: err.message
-            });
-        })
-}
-
-render() {
-    const { name, content, folders  } = this.state
+   state = {
+       error: null,
+       name: "",
+       content: "",
+       folder: ""
+   }
  
-    return (
-      <section className='EditNote'>
-        <h2>Edit Note</h2>
-        <form onSubmit={this.handleSubmit}> 
-            <div className='field'>
-                <label htmlFor='name-input'>
-                Name:
-                </label>
-                <input 
-                    type='text' 
-                    id='name' 
-                    name='name'
-                    defaultValue={name}
-                    // onChange={this.handleNameChange}
-                    />
-            </div>
-            <div className='field'>
-              <label htmlFor='note-content-input'>
-                Content
-              </label>
-              <textarea 
-              type='text' 
-              id='content' 
-              name='content'
-              defaultValue={content}/>
-            </div>
-            <div className='field'>
-              <label htmlFor='note-folder-select'>
-                Folder
-              </label>
-              <select id='selectedFolder' name='selectedFolder'>
-                <option value={null}>...</option>
-                {folders.map(folder =>
-                  <option key={folder.id} value={folder.id}>
-                    {folder.name}
-                  </option>
-                )}
-              </select>
-            </div>
-            <div className='buttons'>
-                <button className='editButton' type='submit'>
-                Edit folder
-                </button>
-            </div>
-        </form>
-      </section>
-    )
-  }
+   static contextType = ApiContext
+ 
+   componentDidMount() {
+ 
+    const noteId  = this.props.match.params.noteId
+    console.log(noteId)
+ 
+   fetch(`http://localhost:8000/api/notes/${noteId}`, { method: 'GET'})
+       .then(res => {
+       if(!res.ok) {
+           throw new Error('Something went wrong, please try again later');
+       }
+       return res.json();
+       }) 
+   .then(data => {
+        this.setState({
+                name: data.name,
+                content: data.content,
+                folder: data.folder
+        })
+        console.log(this.state)
+       })
+   .catch(err => {
+       this.setState({
+           error: err.message
+           });
+       })
+   }
+ 
+   handleNameChange = e => {
+       this.setState({ name: e.target.value })
+     };
+ 
+   handleContentChange = e => {
+       this.setState({ content: e.target.value })
+   };
+ 
+   handleFolderChange = e => {
+       this.setState({ folder: e.target.value })
+     };
+ 
+   handleSubmit = e => {
+       e.preventDefault()
+       const noteName = e.target.name.value
+       this.setState ({
+          name: noteName
+       })
+       const noteId = this.props.match.params.noteId
+       const { id, name, content, folder } = this.state
+       const newNote = { id, name, content, folder }
+ 
+       const url = `http://localhost:8000/api/notes/${noteId}`
+       console.log(url)
+       const options = {
+           method: 'PATCH',
+            headers: {
+               'content-type': 'application/json'
+           },
+           body: JSON.stringify(newNote)
+       }
+       fetch(url, options)
+       .then(res => {
+       if(!res.ok) {
+           throw new Error('Something went wrong, please try again later');
+       }
+       return res.json();
+       }) 
+       .then(() => {
+           this.context.updateNote(newNote)
+           this.props.history.push('/')
+       })
+    .catch(err => {
+       this.setState({
+           error: err.message
+           });
+       })
 }
+ 
+render() {
+   const { name, content, folder  } = this.state
+   const folders = this.context.folders
+   return (
+     <section className='EditNote'>
+       <h2>Edit Note</h2>
+       <form onSubmit={this.handleSubmit}>
+           <div className='field'>
+               <label htmlFor='name-input'>
+               Name:
+               </label>
+               <input
+                   type='text'
+                   id='name'
+                   name='name'
+                   defaultValue={name}
+                   onChange={this.handleNameChange}
+               />
+           </div>
+           <div className='field'>
+             <label htmlFor='note-content-input'>
+               Content
+             </label>
+             <textarea
+             type='text'
+             id='content'
+             name='content'
+             defaultValue={content}
+             onChange={this.handleContentChange}/>
+           </div>
+           <div className='field'>
+             <label htmlFor='note-folder-select'>
+               Folder
+             </label>
+             <select id='selectedFolder' name='selectedFolder' defaultValue={folder} onChange={this.handleFolderChange} >
+               <option value={null}>...</option>
+               {folders.map(folder =>
+                 <option key={folder.id} value={folder.id}>
+                   {folder.name}
+                 </option>
+               )}
+             </select>
+           </div>
+           <div className='buttons'>
+               <button className='editButton' type='submit'>
+               Edit folder
+               </button>
+           </div>
+       </form>
+     </section>
+   )
+ }
+}
+

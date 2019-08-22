@@ -50,7 +50,7 @@ class AddNote extends Component {
         return res.json();
       })
     .then(data => {
-      this.props.addNewNote(data)
+      this.props.addNote(data)
       this.props.history.push('/')
     })
     .catch(err => {

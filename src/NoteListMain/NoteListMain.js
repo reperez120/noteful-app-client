@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Note from '../Note/Note';
 import AddButton from '../AddButton/AddButton';
 import ApiContext from '../ApiContext';
-import { getNotesForFolder } from '../notes-helpers';
 import NotefulError from '../NotefulError';
 import './NoteListMain.css'
 
@@ -17,25 +16,30 @@ export default class NoteListMain extends React.Component {
 
   render() {
     const { folderId } = this.props.match.params
-    const { notes=[] } = this.context
+    const { folders=[] } = this.context
+    const notes = []
 
-    const notesForFolder = getNotesForFolder(notes, folderId)
+    const getNotes = () => {
+      folders.forEach(folder => notes.push(...folder.notes))
+      return notes
+    }
+    getNotes(notes,folders)
 
-   
-   
     return (
       <section className='NoteListMain'>
         <NotefulError>
-        <ul>
-          {notesForFolder.map(note =>
+        <ul> 
+          {notes.map(note => 
             <li key={note.id}>
               <Note
                 id={note.id}
                 name={note.name}
+                content={note.content}
                 modified={note.date}
               />
             </li>
-          )}
+          )
+          }
         </ul>
         <div className='NoteListMain__button-container'>
           <AddButton

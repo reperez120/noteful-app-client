@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AddFolder component renders the add folder form 1`] = `
+<Route>
+  <Component />
+</Route>
+`;
+
 exports[`AddItemForm component renders the complete form 1`] = `
 <section
   className="AddFolder"

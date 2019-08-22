@@ -62,10 +62,10 @@ class AddFolder extends Component {
             <label htmlFor='name-input'>
               Name
             </label>
-            <input type='text' id='name' name='name'/>
+            <input type='text' id='name'/>
           </div>
           <div className='buttons'>
-            <button type='submit'>
+            <button type='submit' className="addFolderButton">
               Add folder
             </button>
           </div>

@@ -1,8 +1,18 @@
 
 .AddFolder {
-  color: #dedede;
+  color: white;
 }
 
-.AddFolder h2 {
-  margin-left: 16px;
+/* .folderNameInput {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+} */
+
+.addFolderButton {
+  height: 3rem;
+} 
+
+.folderNameInput {
+  width: 2rem;
 }

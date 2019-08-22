@@ -17,15 +17,7 @@ import './App.css'
 class App extends Component {
 
     state = {
-        folders: [],
-        notes: [
-            {id: 8,
-            name: "Wolves"},
-            {id: 4, 
-            name: "Birds"},
-            {id: 5, name: "Bears"}
-
-        ]
+        folders: []
     }
 
     addFolder = folder => {
@@ -42,16 +34,20 @@ class App extends Component {
           }
           folders[index].notes.push({ 
             id: note.id, 
-            name: note.name 
+            name: note.name,
+            content: note.content,
+            date: note.date
           })
           })
         return folders
       }
 
-      addNote = (folders, note) => {
+    addNote = (folders, note) => {
         folders.notes.push({ 
             id: note.id, 
-            name: note.name 
+            name: note.name,
+            content: note.content,
+            date: note.date
         })
     };
 
@@ -78,8 +74,9 @@ class App extends Component {
     };
 
     handleDeleteNote = noteId => {
+        
         this.setState({
-            notes: this.state.notes.filter(note => note.id !== noteId)
+            notes: this.state.folders.notes.filter(note => note.id !== noteId)
         });
         this.props.history.push(`/`)
     };
@@ -88,8 +85,18 @@ class App extends Component {
         this.setState({
             folders: this.state.folders.filter(folder => folder.id !== folderId)
         });
+        this.props.history.push(`/`)
     };
-  
+
+    getNotes = () => {
+        this.state.EditNotefolders.forEach((folder) => {
+        let notes = `${folder.notes}`
+        this.setState ({
+            notes: notes
+        })  
+      })
+    }
+
     componentDidMount() {
         Promise.all([
             fetch(`${config.API_ENDPOINT}/api/notes`),
@@ -106,9 +113,7 @@ class App extends Component {
             })
             .then(([notes, folders]) => {
                const data = this.mergeFoldersAndNotes(folders, notes)
-
                 this.setState({folders: data});
-
             })
             .catch(error => {
                 console.error({error});
@@ -135,7 +140,6 @@ class App extends Component {
     }
 
     renderMainRoutes() {
-        const noteId = this.state.notes[0].id
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -161,8 +165,8 @@ class App extends Component {
                <Route path='/add-note'
                 render={(history) =>
                     <AddNote
-                        addNewNote = {this.addNewNote}
-                        folders ={this.state.folders} 
+                        addNote = {this.addNote}
+                        folders = {this.state.folders} 
                     /> }
                 />
                 <Route 
@@ -170,25 +174,26 @@ class App extends Component {
                     component={EditFolder} 
                     /> 
 
-                <Route 
-                    path='notes/:noteId/edit'
+                <Route path='/notes/:noteId/edit'
                     component={EditNote} 
-                    /> 
+                    /> }
+                />
             </>
         );
     }
 
     render() {
-            const value = {
-            folders: this.state.folders,
-            notes: this.state.notes,
-            deleteNote: this.handleDeleteNote,
-            deleteFolder: this.handleDeleteFolder,
-            addNote: this.addNote,
-            addFolder: this.addFolder,
-            updateFolder: this.updateFolder,
-            updateNote: this.updateNote
-            };
+
+        const value = {
+        folders: this.state.folders,
+        notes: this.notes,
+        deleteNote: this.handleDeleteNote,
+        deleteFolder: this.handleDeleteFolder,
+        addNote: this.addNote,
+        addFolder: this.addFolder,
+        updateFolder: this.updateFolder,
+        updateNote: this.updateNote
+        };
        
         return (
             <ApiContext.Provider value={value}>

@@ -2,13 +2,14 @@
   background-color: black;
   color: #dedede;
   padding: 16px;
-  max-width: 332px;
+  max-width: 500px;
 }
 
 .Noteful-form label {
   display: block;
   font-size: 16px;
   padding-bottom: 8px;
+  text-align: left;
 }
 
 .Noteful-form input,
@@ -16,7 +17,8 @@
 .Noteful-form select {
   font-size: 14px;
   padding: 8px;
-  width: 300px;
+  width: 200px;
+  text-align: left;
 }
 
 .Noteful-form select {
@@ -39,7 +41,6 @@
   font-size: 18px;
   font-weight: bold;
   padding: 8px;
-  text-align: center;
   text-decoration: none;
 }
 .Noteful-form button[type="submit"]:hover {

@@ -2,28 +2,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import ApiContext from '../ApiContext';
-import EditNote from '../EditNote/EditNote';
 import config from '../config';
 import PropTypes from 'prop-types';
 import './Note.css'
 
 export default class Note extends React.Component {
-  static defaultProps ={
+  static defaultProps = {
     folders: [],
-    onDeleteNote: () => {},
-    onEditNote: () => {},
     notes: []
   }
   static contextType = ApiContext;
 
-  handleClickDelete = ( noteId, e) => {
+  handleClickDelete = (noteId, e) => {
     e.preventDefault()
   
     fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
       method: 'DELETE'
     })
       .then(res => {
-        console.log(res)
         if (!res.ok)
           return res.json().then(e => Promise.reject(e))
         return res
@@ -38,8 +34,7 @@ export default class Note extends React.Component {
 
   render() {
     const { note, name, id, content, modified } = this.props
-    const { folders=[], notes=[] } = this.context
-   
+
     return (
       <div className='Note'>
         <h2 className='Note__title'>
@@ -51,7 +46,7 @@ export default class Note extends React.Component {
         <button
           className='Note__delete'
           type='button'
-          onClick={this.handleClickDelete}
+          onClick={this.handleClickDelete.bind(null, id)}
         >
           {' '}
           remove

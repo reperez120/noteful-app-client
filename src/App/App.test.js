@@ -1,21 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faPlus, faChevronLeft, faTrashAlt, faCheckDouble
-} from '@fortawesome/free-solid-svg-icons'
+// import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+// import {withRouter} from 'react-router-dom';
 import App from './App'
-
-library.add(faPlus, faChevronLeft, faTrashAlt, faCheckDouble)
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+configure({ adapter: new Adapter() });
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
   ReactDOM.render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+      <App/>,
     div
   )
   ReactDOM.unmountComponentAtNode(div)
-})
+ })
+ 

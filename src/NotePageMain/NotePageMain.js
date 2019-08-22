@@ -18,11 +18,22 @@ export default class NotePageMain extends React.Component {
   static contextType = ApiContext
 
   render() {
-    const { notes=[] } = this.context
-    console.log(notes, this.props)
-    const { noteId } = this.props.match.params
-    const note = findNote(notes, noteId) || { content: '' }
-    console.log(note)
+    const { folders=[] } = this.context
+    const  noteId  = this.props.match.params.noteId
+
+    function getNote(id) {
+      id = Number(id)
+      let n
+      folders.find(folder => 
+        folder.notes.find(note => {
+          if (note.id === id) n = note
+          return n
+        })
+      )
+      return n
+    }
+    const note =  getNote(noteId) || {}
+ 
     return (
       <section className='NotePageMain'>
         <NotefulError>

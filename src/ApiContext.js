@@ -3,8 +3,9 @@ import React from 'react'
 const ApiContext =  React.createContext({
 
   render() {
+    console.log('context', this)
     const contextValue = {
-    folders: this.state.folders,
+    folders: this.folders,
     notes: [],
     addFolder: this.addFolder,
     addNote: this.addNote,

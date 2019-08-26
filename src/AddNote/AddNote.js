@@ -76,7 +76,10 @@ class AddNote extends Component {
           return Promise.all([notesRes.json(), foldersRes.json()]);
   })
     .then(([notes, folders])=> {
-      this.context.addNote(folders, note)
+      console.log(folders)
+      console.log(note)
+      console.log(this.context.addNote)
+      let addNote = this.context.addNote(folders, note)
       this.props.history.push('/')
     })
     .catch(err => {

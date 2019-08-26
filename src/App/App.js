@@ -50,8 +50,8 @@ class App extends Component {
             const i = this.state.folders.findIndex(folder => folder.id === note.folderId)
             folders[i].notes.push(note)
             console.log(i)
-            return folders
             console.log(folders)
+            return folders
         }
         console.log(addNewNote())
         console.log('addNote ran')

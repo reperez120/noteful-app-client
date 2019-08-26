@@ -5,7 +5,8 @@ import ValidationError from './ValidationError';
 import PropTypes from 'prop-types';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
-import './AddNote.css'
+import './AddNote.css';
+import config from '../config';
 
 class AddNote extends Component {
 
@@ -56,9 +57,26 @@ class AddNote extends Component {
         }
         return res
       })
-    .then(data => {
-      const folders = this.context.folders
-      this.context.addNote(folders, data)
+      Promise.all([
+        fetch(`${config.API_ENDPOINT}/api/notes`),
+        fetch(`${config.API_ENDPOINT}/api/folders`),
+        { method: 'GET'}
+      ])
+    .then(([notesRes, foldersRes]) => {
+      console.log(notesRes)
+      console.log(foldersRes)
+               
+      if (!notesRes.ok)
+          return notesRes.json().then(e => Promise.reject(e));
+          let notesReq = notesRes.json
+          console.log(notesReq)
+      if (!foldersRes.ok)
+          return foldersRes.json().then(e => Promise.reject(e));
+          
+          return Promise.all([notesRes.json(), foldersRes.json()]);
+  })
+    .then(([notes, folders])=> {
+      this.context.addNote(folders, note)
       this.props.history.push('/')
     })
     .catch(err => {

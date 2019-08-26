@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditNote.css';
 import ApiContext from '../ApiContext';
-import config from '../config'
+// import config from '../config'
  
 export default class EditNote extends Component {
     
@@ -29,7 +29,6 @@ export default class EditNote extends Component {
    componentDidMount() {
  
     const noteId  = this.props.match.params.noteId
-    console.log(noteId)
  
    fetch(`http://localhost:8000/api/notes/${noteId}`, { method: 'GET'})
        .then(res => {
@@ -44,7 +43,6 @@ export default class EditNote extends Component {
                 content: data.content,
                 folder: data.folder
         })
-        console.log(this.state)
        })
    .catch(err => {
        this.setState({
@@ -92,6 +90,7 @@ export default class EditNote extends Component {
        return res.json();
        }) 
        .then(() => {
+           this.resetFields(newNote)
            this.context.updateNote(newNote)
            this.props.history.push('/')
        })
@@ -101,6 +100,14 @@ export default class EditNote extends Component {
            });
        })
 }
+
+resetFields = (newFields) => {
+    this.setState({
+      name: newFields.name || '',
+      content: newFields.content || '',
+      folder: newFields.folder || '',
+    })
+  }
  
 render() {
    const { name, content, folder  } = this.state

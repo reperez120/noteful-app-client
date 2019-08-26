@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Note from '../Note/Note';
 import AddButton from '../AddButton/AddButton';
+import { getNotes } from '../notes-helpers';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
 import './NoteListMain.css'
@@ -18,12 +19,12 @@ export default class NoteListMain extends React.Component {
     const { folderId } = this.props.match.params
     const { folders=[] } = this.context
     const notes = []
-
     const getNotes = () => {
       folders.forEach(folder => notes.push(...folder.notes))
       return notes
     }
-    getNotes(notes,folders)
+
+    getNotes(notes, folders)
 
     return (
       <section className='NoteListMain'>
@@ -38,8 +39,7 @@ export default class NoteListMain extends React.Component {
                 modified={note.date}
               />
             </li>
-          )
-          }
+          )}
         </ul>
         <div className='NoteListMain__button-container'>
           <AddButton

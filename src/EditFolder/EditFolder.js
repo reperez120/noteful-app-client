@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditFolder.css';
 import ApiContext from '../ApiContext';
-import config from '../config'
+// import config from '../config'
 
 export default class EditFolder extends Component {
 

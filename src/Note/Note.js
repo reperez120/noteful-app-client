@@ -11,6 +11,16 @@ export default class Note extends React.Component {
     folders: [],
     notes: []
   }
+
+  static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.object,
+    }),
+    history: PropTypes.shape({
+      push: PropTypes.func,
+    }).isRequired,
+  };
+
   static contextType = ApiContext;
 
   handleClickDelete = (noteId, e) => {
@@ -22,10 +32,11 @@ export default class Note extends React.Component {
       .then(res => {
         if (!res.ok)
           return res.json().then(e => Promise.reject(e))
-        return res
+        // return res
       })
       .then(() => {
-        this.context.deleteNote(noteId)
+        const deleteNote = this.context.deleteNote
+        deleteNote(noteId)
       })
       .catch(error => {
         console.error({ error })
@@ -33,7 +44,7 @@ export default class Note extends React.Component {
   }
 
   render() {
-    const { note, name, id, content, modified } = this.props
+    const { name, id, content, modified } = this.props
 
     return (
       <div className='Note'>

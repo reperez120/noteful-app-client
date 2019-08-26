@@ -3,6 +3,10 @@
   color:white;
 }
 
+.addNoteButton {
+  height: 1rem;
+}
+
 /* .AddNote h2 {
   margin-left: 16px;
 } */

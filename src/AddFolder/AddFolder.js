@@ -4,12 +4,13 @@ import NotefulError from '../NotefulError';
 import PropTypes from 'prop-types';
 import './AddFolder.css';
 import { withRouter } from 'react-router-dom';
+import ApiContext from '../ApiContext'
 
 class AddFolder extends Component {
 
-  // state = {
-  //   error: null,
-  // };
+  state = {
+    error: null,
+  };
 
   constructor(props) {
     super(props);
@@ -17,6 +18,8 @@ class AddFolder extends Component {
       name: ''
     }
   }
+
+  static contextType = ApiContext;
 
   handleFolderSubmit = e => {
     e.preventDefault()
@@ -42,7 +45,8 @@ class AddFolder extends Component {
         return res.json();
       })
       .then(data => {
-        this.props.addFolder(data);
+        console.log(this.context.addFolder())
+        console.log('hi')
         this.props.history.push('/')
       })
       .catch(err => {

@@ -12,7 +12,8 @@ const ApiContext =  React.createContext({
     deleteNote: this.deleteNote,
     updateNote: this.updateNote,
     updateFolder:this.updateFolder,
-    deleteFolder: this.deleteFolder
+    deleteFolder: this.deleteFolder,
+    getNotes: this.getNotes
     }
   }
 

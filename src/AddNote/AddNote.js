@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import NotefulForm from '../NotefulForm/NotefulForm';
 import ValidationError from './ValidationError';
+import PropTypes from 'prop-types';
+import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
 import './AddNote.css'
 
 class AddNote extends Component {
+
+  state = {
+    error: null,
+  };
 
   constructor(props) {
     super(props);
@@ -18,6 +24,8 @@ class AddNote extends Component {
       }
     }
   }
+
+  static contextType = ApiContext;
 
   verifyNameLength(name) {
     this.setState({name}, () => {this.validateName(name)});
@@ -32,8 +40,7 @@ class AddNote extends Component {
       content: content.value,
       date: new Date()
     }
-    console.log(note)
-    
+
     const options = {           
       method: 'POST',
       headers: {
@@ -47,10 +54,11 @@ class AddNote extends Component {
         if(!res.ok) {
           throw new Error('Something went wrong, please try again later');
         }
-        return res.json();
+        return res
       })
     .then(data => {
-      this.props.addNote(data)
+      const folders = this.context.folders
+      this.context.addNote(folders, data)
       this.props.history.push('/')
     })
     .catch(err => {
@@ -83,7 +91,7 @@ formValid() {
 }
 
   render() {
-    const folders = this.props.folders
+    const folders = this.context.folders
     return (
       <section className='AddNote'>
         <NotefulError>
@@ -116,7 +124,7 @@ formValid() {
               </select>
             </div>
             <div className='buttons'>
-              <button type='submit' disabled={!this.state.formValid} >
+              <button type='submit' className='addNoteButton' disabled={!this.state.formValid} >
                 Add note
               </button>
             </div>
@@ -126,5 +134,16 @@ formValid() {
     )
   }
 }
+
+// AddNote.propTypes = {
+//   addNote: PropTypes.func.isRequired,
+//   note: PropTypes.objectOf(PropTypes.shape({
+//     id: PropTypes.string.isRequired,
+//     name: PropTypes.string.isRequired,
+//     content: PropTypes.string.isRequired,
+//     modified: PropTypes.number.isRequired,
+//   })) 
+// };
+
 
 export default withRouter(AddNote);

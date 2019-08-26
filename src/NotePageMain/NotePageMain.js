@@ -1,14 +1,14 @@
 import React from 'react';
 import Note from '../Note/Note';
 import ApiContext from '../ApiContext';
-import { findNote } from '../notes-helpers';
+// import { findNote } from '../notes-helpers';
 import NotefulError from '../NotefulError';
 import './NotePageMain.css'
 
 export default class NotePageMain extends React.Component {
-  constructor(props){
-    super(props)
-  }
+  // constructor(props){
+  //   super(props)
+  // }
 
   static defaultProps = {
     match: {

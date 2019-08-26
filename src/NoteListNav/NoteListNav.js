@@ -1,8 +1,8 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AddButton from '../AddButton/AddButton'
 import ApiContext from '../ApiContext'
-import { countNotesForFolder} from '../notes-helpers';
+import { countNotesForFolder, countNotes} from '../notes-helpers';
 import './NoteListNav.css'
 import PropTypes from 'prop-types'
 import config from '../config'
@@ -34,7 +34,8 @@ export default class NoteListNav extends React.Component {
     .catch(error => {
       console.error({ error })
     })
-}
+  }
+
 
   render() {
     const { folders=[],  notes=[] } = this.context
@@ -44,13 +45,14 @@ export default class NoteListNav extends React.Component {
         <ul className='NoteListNav__list'>
           {folders.map(folder =>
             <li key={folder.id}>
-              <NavLink
+             <Link
                 className='NoteListNav__folder-link'
                 to={`/folder/${folder.id}`}
               >
                 <span className='NoteListNav__num-notes'>
-                {countNotesForFolder(notes, folder.id)}
-                  {folder.notes.length}
+                {/* {countNotesForFolder(notes, folder.id)} */}
+                {countNotes(folders, notes)}
+                  {/* {folder.notes.length} */}
                 </span>
                 {folder.name}
                 <span className="Content">
@@ -70,7 +72,7 @@ export default class NoteListNav extends React.Component {
           </Link>
           </div>
           </div>
-              </NavLink>
+          </Link>
             </li>
           )}
         </ul>

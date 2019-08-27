@@ -45,7 +45,7 @@ class App extends Component {
       }
 
     addNote = (folders, note) => {
-        console.log('addNote started')
+        console.log('addNote started', folders, note)
         let addNewNote = (folders, note) => {
             const i = this.state.folders.findIndex(folder => folder.id === note.folderId)
             folders[i].notes.push(note)

@@ -90,7 +90,6 @@ class App extends Component {
     };
 
     updateFolder = updatedFolder => {
-        console.log(updatedFolder)
         const newFolders = this.state.folders.map(folder =>
           (folder.id === updatedFolder.id)
             ? updatedFolder

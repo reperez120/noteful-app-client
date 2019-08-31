@@ -16,11 +16,17 @@ export default class NotePageNav extends React.Component {
   }
   static contextType = ApiContext;
 
+ findFolder = (folders=[], folderId) =>
+  folders.find(folder => folder.id === folderId)
 
- findFolder = (folders=[], folderId) => {
+  // findNote = (notes=[], noteId) => 
+  // notes.find(note => note.id === Number(noteId))
+
+
+
+//  findFolder = (folders=[], folderId) => {
   // folders.find(folder => +folder.id === +folderId)
- }
-
+//  }
 
   render() {
     const notes = []

@@ -34,7 +34,6 @@ export default class EditFolder extends Component {
         return res.json();
         })  
     .then(data => {
-        console.log(data.id)
          this.setState({
             id: data.id,
             name: data.name

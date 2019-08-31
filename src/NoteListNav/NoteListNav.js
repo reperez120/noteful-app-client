@@ -53,7 +53,6 @@ export default class NoteListNav extends React.Component {
        folder.notes = folder.notes || []
        if (folder.notes.length) {
           let length = folder.notes.length
-          console.log(length)
           return length
        }
     })
@@ -61,14 +60,16 @@ export default class NoteListNav extends React.Component {
 
   render() {
     const { folders={}} = this.context
-  
+    this.countNotes(folders)
+    
     return (
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
           {(folders.map(folder =>
             <li key={folder.id}>
                 <span className='NoteListNav__num-notes'>
-                {/* {countNotes(folder)} */}
+                {this.countNotes(folders)}
+                {folder.notes.length}
                 </span>
                 {folder.name}
                 <span className="Content">

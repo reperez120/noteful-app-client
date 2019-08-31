@@ -25,7 +25,8 @@ export default class EditFolder extends Component {
     
     componentDidMount() {
 
-    const folderId  = this.props.match.params.folderId
+    const folderId = this.props.match.params.folderId
+    // console.log(this.props.match.params.folderId)
 
     fetch(`http://localhost:8000/api/folders/${folderId}`, { method: 'GET'})
         .then(res => {

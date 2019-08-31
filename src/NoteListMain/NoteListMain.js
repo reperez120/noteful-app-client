@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Note from '../Note/Note';
 import AddButton from '../AddButton/AddButton';
-import { getNotes } from '../notes-helpers';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
 import './NoteListMain.css'
@@ -15,16 +14,23 @@ export default class NoteListMain extends React.Component {
   }
   static contextType = ApiContext
 
-  render() {
-    const { folderId } = this.props.match.params
-    const { folders=[] } = this.context
-    const notes = []
-    const getNotes = () => {
-      folders.forEach(folder => notes.push(...folder.notes))
-      return notes
-    }
+getNotes = (folders = []) => {
+  let newNotes = []
+  if (!folders.length) return folders
+    folders.forEach(folder => {
+      folder.notes = folder.notes || []
+      if (folder.notes.length) {
+        folder.notes.forEach(note =>
+        newNotes.push(note)  
+        )}   
+    } 
+    )
+    return newNotes
+  }
 
-    getNotes(notes, folders)
+  render() {
+    const { folders=[] } = this.context
+    const notes =  this.getNotes(folders) || []
 
     return (
       <section className='NoteListMain'>

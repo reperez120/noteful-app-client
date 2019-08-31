@@ -6,14 +6,12 @@ const ApiContext =  React.createContext({
     console.log('context', this)
     const contextValue = {
     folders: this.folders,
-    notes: [],
     addFolder: this.addFolder,
     addNote: this.addNote,
     deleteNote: this.deleteNote,
     updateNote: this.updateNote,
     updateFolder:this.updateFolder,
     deleteFolder: this.deleteFolder,
-    getNotes: this.getNotes
     }
   }
 

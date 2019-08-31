@@ -35,8 +35,7 @@ export default class Note extends React.Component {
         // return res
       })
       .then(() => {
-        const deleteNote = this.context.deleteNote
-        deleteNote(noteId)
+        this.context.deleteNote(noteId)
       })
       .catch(error => {
         console.error({ error })

@@ -17,15 +17,17 @@ export default class NotePageNav extends React.Component {
   static contextType = ApiContext;
 
 
- findFolder = (folders=[], folderId) =>
-folders.find(folder => folder.id === folderId)
+ findFolder = (folders=[], folderId) => {
+  // folders.find(folder => +folder.id === +folderId)
+ }
 
 
   render() {
-    const { notes, folders, } = this.context
+    const notes = []
     const { noteId } = this.props.match.params
     const note = findNote(notes, noteId) || {}
-    const folder = this.findFolder(this.context.folders, note.folderId)
+    const folder = this.findFolder(this.context.folders, note.folder)
+   
     return (
       <div className='NotePageNav'>
       <NotefulError>

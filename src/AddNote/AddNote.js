@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
 import './AddNote.css';
-import config from '../config';
 
 class AddNote extends Component {
 
@@ -57,36 +56,16 @@ class AddNote extends Component {
         }
         return res
       })
-      Promise.all([
-        fetch(`${config.API_ENDPOINT}/api/notes`),
-        fetch(`${config.API_ENDPOINT}/api/folders`),
-        { method: 'GET'}
-      ])
-    .then(([notesRes, foldersRes]) => {
-      console.log(notesRes)
-      console.log(foldersRes)
-               
-      if (!notesRes.ok)
-          return notesRes.json().then(e => Promise.reject(e));
-          let notesReq = notesRes.json
-          console.log(notesReq)
-      if (!foldersRes.ok)
-          return foldersRes.json().then(e => Promise.reject(e));
-          
-          return Promise.all([notesRes.json(), foldersRes.json()]);
-  })
-    .then(([notes, folders])=> {
-      console.log(folders)
-      console.log(note)
-      console.log(this.context.addNote)
-      let addNote = this.context.addNote(folders, note)
-      this.props.history.push('/')
-    })
-    .catch(err => {
-      this.setState({
-        error: err.message
+      .then(() => {
+      let folders = this.context.folders
+      this.context.addNote(folders, note)
+        this.props.history.push('/')
+      })
+      .catch(err => {
+        this.setState({
+          error: err.message
+        });
       });
-    });
   }
 
   validateName(fieldValue) {
@@ -156,15 +135,15 @@ formValid() {
   }
 }
 
-// AddNote.propTypes = {
-//   addNote: PropTypes.func.isRequired,
-//   note: PropTypes.objectOf(PropTypes.shape({
-//     id: PropTypes.string.isRequired,
-//     name: PropTypes.string.isRequired,
-//     content: PropTypes.string.isRequired,
-//     modified: PropTypes.number.isRequired,
-//   })) 
-// };
+AddNote.propTypes = {
+
+  note: PropTypes.objectOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    modified: PropTypes.number.isRequired,
+  })) 
+};
 
 
 export default withRouter(AddNote);

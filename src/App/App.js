@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {Route, Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
@@ -21,11 +20,9 @@ class App extends Component {
     }
 
     addFolder = folder => {
-        console.log('addFolder started')
         this.setState({ 
             folders: [ ...this.state.folders, folder 
         ]})
-        console.log('addFolder completed')
     }
 
     mergeFoldersAndNotes = (folders, notes) => {
@@ -42,66 +39,32 @@ class App extends Component {
           })
           })
         return folders
-      }
-
-    addNote = (folders, note) => {
-        console.log('addNote started', folders, note)
-        let addNewNote = (folders, note) => {
-            const i = this.state.folders.findIndex(folder => folder.id === note.folderId)
-            folders[i].notes.push(note)
-            console.log(i)
-            console.log(folders)
-            return folders
-        }
-        console.log(addNewNote())
-        console.log('addNote ran')
-        const newFolders = addNewNote(folders, note) 
-        console.log(addNewNote())
-        console.log('new folders', newFolders) 
-        this.setState({ 
-            folders: newFolders
-        })
-        console.log('addNote completed')
-     }
-     
-    updateFolder = updatedFolder => {
-        const newFolders = this.state.folders.map(folder =>
-          (folder.id === updatedFolder.id)
-            ? updatedFolder
-            : folder
-        )
-        this.setState({
-        folders: newFolders
-        })
     };
-
-    handleDeleteNote = id => {
-        console.log('deleteNote started')
-        return this.state.folders.map(folder => {
-          folder.notes = folder.notes.filter(note => note.id !== id)
-          console.log(folder)
-          return folder
-          this.setState({ folders: folder})
-          console.log(this.state)
+ 
+    addNote = (folders, note) => {
+        let copy = [...folders]
+        const i = this.state.folders.findIndex(folder => {
+           return folder.id ===  +note.folder
         })
-        console.log('deleteNote completed')
+        copy[i].notes.push(note) 
+        this.setState({
+            folders: copy
+        })
+    }
+     
+    handleDeleteNote = id => {
+        const newFolders = this.state.folders.map(folder => {
+          folder.notes = folder.notes.filter(note => note.id !== id)
+          return folder
+        })
+        this.setState({ folders: newFolders })
       }
 
     handleDeleteFolder = folderId => {
         this.setState({
             folders: this.state.folders.filter(folder => folder.id !== folderId)
         });
-        console.log('deleteFolder ran')
     };
-
-    getNotes = (folders, notes) => {
-        this.state.folders.forEach((folder) => {
-        let notes = `${folder.notes}`
-        this.setState ({
-            notes: notes
-        })  
-      })
-    }
 
     componentDidMount() {
         Promise.all([
@@ -119,21 +82,44 @@ class App extends Component {
             })
             .then(([notes, folders]) => {
                const data = this.mergeFoldersAndNotes(folders, notes)
-                this.setState({folders: data});
+                this.setState({folders: data})
             })
             .catch(error => {
                 console.error({error});
             });
     };
 
-    updateNote = editedNote  => {
-        const newNotes = this.state.map(note =>
-            (note.id === editedNote.id)
-            ? editedNote
-            : note
-            )
+    updateFolder = updatedFolder => {
+        const newFolders = this.state.folders.map(folder =>
+          (folder.id === updatedFolder.id)
+            ? updatedFolder
+            : folder
+        )
         this.setState({
-            notes: newNotes
+        folders: newFolders
+        })
+    };
+
+    updateNote = editedNote => {
+        console.log('updateNote started')
+        console.log(this.state.folders)
+        console.log(editedNote.folder)
+        const folderIndex = this.state.folders.findIndex(folder => folder.id === editedNote.folder)
+        console.log(folderIndex)
+        const folder = this.state.folders[folderIndex]
+        console.log(folder)
+        const noteIndex = folder.notes.findIndex(n => n.id === editedNote.id)
+        let note = folder.notes[noteIndex]
+        note = { ...note, ...editedNote }
+        folder.notes.push(note)
+        const newFolders = [
+            ...this.state.folders.slice(0, folderIndex),
+            folder,
+            ...this.state.folders.slice(folderIndex + 1)
+        ]
+        console.log(this.state.folders)
+        this.setState({
+           folders: newFolders
         })
     }
 
@@ -148,11 +134,10 @@ class App extends Component {
                         component={NoteListNav}
                     />
                 ))}
-                <Route path="/note/:noteId" component={NotePageNav} />
-                <Route path="/add-folder" component={NotePageNav} />
-                <Route path="/add-note" component={NotePageNav}
-                 />
-                <Route path="/folder/:folderId" component={NotePageNav} />
+                <Route path="/note/:noteId" component={NotePageNav}/>
+                <Route path="/add-folder" component={NotePageNav}/>
+                <Route path="/add-note" component={NotePageNav}/>
+                <Route path="/folder/:folderId" component={NotePageNav}/>
             </>
         );
     }
@@ -168,17 +153,16 @@ class App extends Component {
                         component={NoteListMain}
                     />
                 ))}
-                <Route path='/note/:noteId'component={NotePageMain} />
-                <Route path='/add-folder' component={AddFolder} />
-                <Route path='/add-note'component={AddNote} />
-                <Route path='/folders/:folderId/edit' component={EditFolder} /> 
-                <Route path='/notes/:noteId/edit' component={EditNote} /> 
+                <Route path='/note/:noteId'component={NotePageMain}/>
+                <Route path='/add-folder' component={AddFolder}/>
+                <Route path='/add-note'component={AddNote}/>
+                <Route path='/folders/:folderId/edit' component={EditFolder}/> 
+                <Route path='/notes/:noteId/edit' component={EditNote}/> 
             </>
         );
     }
 
     render() {
-
         const value = {
         folders: this.state.folders,
         notes: this.notes,
@@ -188,9 +172,8 @@ class App extends Component {
         addFolder: this.addFolder,
         updateFolder: this.updateFolder,
         updateNote: this.updateNote,
-        getNotes: this.getNotes
-        };
-       
+        };   
+
         return (
             <ApiContext.Provider value={value}>
                 <div className="App">

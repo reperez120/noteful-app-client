@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import AddButton from '../AddButton/AddButton'
 import ApiContext from '../ApiContext'
-import { countNotesForFolder, countNotes} from '../notes-helpers';
 import './NoteListNav.css'
 import PropTypes from 'prop-types'
 import config from '../config'
@@ -36,23 +35,40 @@ export default class NoteListNav extends React.Component {
     })
   }
 
+  countNotes = (folders) => {
+    if (!folders.length) return folders
+     folders.forEach(folder => {
+       folder.notes = folder.notes || []
+       if (folder.notes.length) {
+          let length = folder.notes.length
+          console.log(length)
+          return length
+       }
+    })
+  }
+
+  countNotes = (folders) => {
+    if (!folders.length) return folders
+     folders.forEach(folder => {
+       folder.notes = folder.notes || []
+       if (folder.notes.length) {
+          let length = folder.notes.length
+          console.log(length)
+          return length
+       }
+    })
+  }
 
   render() {
-    const { folders=[],  notes=[] } = this.context
-    
+    const { folders={}} = this.context
+  
     return (
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
-          {folders.map(folder =>
+          {(folders.map(folder =>
             <li key={folder.id}>
-             <Link
-                className='NoteListNav__folder-link'
-                to={`/folder/${folder.id}`}
-              >
                 <span className='NoteListNav__num-notes'>
-                {/* {countNotesForFolder(notes, folder.id)} */}
-                {countNotes(folders, notes)}
-                  {/* {folder.notes.length} */}
+                {/* {countNotes(folder)} */}
                 </span>
                 {folder.name}
                 <span className="Content">
@@ -72,9 +88,8 @@ export default class NoteListNav extends React.Component {
           </Link>
           </div>
           </div>
-          </Link>
             </li>
-          )}
+          ))}
         </ul>
         <div className='NoteListNav__button-wrapper'>
           <AddButton

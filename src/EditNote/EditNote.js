@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditNote.css';
 import ApiContext from '../ApiContext';
-// import config from '../config'
  
 export default class EditNote extends Component {
     
@@ -19,6 +18,7 @@ export default class EditNote extends Component {
 
    state = {
        error: null,
+       id: "",
        name: "",
        content: "",
        folder: ""
@@ -29,7 +29,7 @@ export default class EditNote extends Component {
    componentDidMount() {
  
     const noteId  = this.props.match.params.noteId
- 
+
    fetch(`http://localhost:8000/api/notes/${noteId}`, { method: 'GET'})
        .then(res => {
        if(!res.ok) {
@@ -39,6 +39,7 @@ export default class EditNote extends Component {
        }) 
    .then(data => {
         this.setState({
+                id: data.id,
                 name: data.name,
                 content: data.content,
                 folder: data.folder
@@ -62,19 +63,29 @@ export default class EditNote extends Component {
    handleFolderChange = e => {
        this.setState({ folder: e.target.value })
      };
+
+    // resetFields = (newFields) => {
+    //     this.setState({
+    //       name: newFields.name || '',
+    //       content: newFields.content || '',
+    //       folder: newFields.folder || '',
+    //     })
+    // }
  
    handleSubmit = e => {
        e.preventDefault()
        const noteName = e.target.name.value
+       const noteContent = e.target.content.value
+     
        this.setState ({
-          name: noteName
+          name: noteName,
+          content: noteContent,
        })
        const noteId = this.props.match.params.noteId
        const { id, name, content, folder } = this.state
        const newNote = { id, name, content, folder }
- 
+       
        const url = `http://localhost:8000/api/notes/${noteId}`
-       console.log(url)
        const options = {
            method: 'PATCH',
             headers: {
@@ -87,12 +98,11 @@ export default class EditNote extends Component {
        if(!res.ok) {
            throw new Error('Something went wrong, please try again later');
        }
-       return res.json();
        }) 
        .then(() => {
-           this.resetFields(newNote)
            this.context.updateNote(newNote)
-           this.props.history.push('/')
+        //    this.resetFields(newNote)
+            this.props.history.push('/')
        })
     .catch(err => {
        this.setState({
@@ -101,14 +111,7 @@ export default class EditNote extends Component {
        })
 }
 
-resetFields = (newFields) => {
-    this.setState({
-      name: newFields.name || '',
-      content: newFields.content || '',
-      folder: newFields.folder || '',
-    })
-  }
- 
+
 render() {
    const { name, content, folder  } = this.state
    const folders = this.context.folders
@@ -154,7 +157,7 @@ render() {
            </div>
            <div className='buttons'>
                <button className='editButton' type='submit'>
-               Edit folder
+               Edit note
                </button>
            </div>
        </form>

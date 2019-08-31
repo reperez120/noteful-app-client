@@ -101,23 +101,18 @@ class App extends Component {
     };
 
     updateNote = editedNote => {
-        console.log('updateNote started')
-        console.log(this.state.folders)
-        console.log(editedNote.folder)
-        const folderIndex = this.state.folders.findIndex(folder => folder.id === editedNote.folder)
-        console.log(folderIndex)
+        const folderIndex = this.state.folders.findIndex(folder => folder.id === +editedNote.folder)
         const folder = this.state.folders[folderIndex]
-        console.log(folder)
         const noteIndex = folder.notes.findIndex(n => n.id === editedNote.id)
         let note = folder.notes[noteIndex]
-        note = { ...note, ...editedNote }
-        folder.notes.push(note)
+        let newNote = { ...note, ...editedNote }
+        console.log(newNote)
+        folder.notes.push(newNote)
         const newFolders = [
             ...this.state.folders.slice(0, folderIndex),
             folder,
             ...this.state.folders.slice(folderIndex + 1)
         ]
-        console.log(this.state.folders)
         this.setState({
            folders: newFolders
         })

@@ -22,7 +22,7 @@ export default class EditNote extends Component {
        name: "",
        content: "",
        folder: ""
-   }
+    }
  
    static contextType = ApiContext
  
@@ -37,24 +37,24 @@ export default class EditNote extends Component {
        }
        return res.json();
        }) 
-   .then(data => {
+    .then(data => {
         this.setState({
-                id: data.id,
-                name: data.name,
-                content: data.content,
-                folder: data.folder
+            id: data.id,
+            name: data.name,
+            content: data.content,
+            folder: data.folder
         })
        })
    .catch(err => {
        this.setState({
            error: err.message
            });
-       })
-   }
+        })
+    }
  
    handleNameChange = e => {
        this.setState({ name: e.target.value })
-     };
+    };
  
    handleContentChange = e => {
        this.setState({ content: e.target.value })
@@ -64,14 +64,6 @@ export default class EditNote extends Component {
        this.setState({ folder: e.target.value })
      };
 
-    // resetFields = (newFields) => {
-    //     this.setState({
-    //       name: newFields.name || '',
-    //       content: newFields.content || '',
-    //       folder: newFields.folder || '',
-    //     })
-    // }
- 
    handleSubmit = e => {
        e.preventDefault()
        const noteName = e.target.name.value
@@ -101,16 +93,14 @@ export default class EditNote extends Component {
        }) 
        .then(() => {
            this.context.updateNote(newNote)
-        //    this.resetFields(newNote)
-            this.props.history.push('/')
+           this.props.history.push('/')
        })
-    .catch(err => {
-       this.setState({
-           error: err.message
-           });
+        .catch(err => {
+            this.setState({
+                error: err.message
+            });
        })
 }
-
 
 render() {
    const { name, content, folder  } = this.state

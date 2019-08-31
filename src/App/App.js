@@ -90,6 +90,7 @@ class App extends Component {
     };
 
     updateFolder = updatedFolder => {
+        console.log(updatedFolder)
         const newFolders = this.state.folders.map(folder =>
           (folder.id === updatedFolder.id)
             ? updatedFolder
@@ -106,7 +107,6 @@ class App extends Component {
         const noteIndex = folder.notes.findIndex(n => n.id === editedNote.id)
         let note = folder.notes[noteIndex]
         let newNote = { ...note, ...editedNote }
-        console.log(newNote)
         folder.notes.push(newNote)
         const newFolders = [
             ...this.state.folders.slice(0, folderIndex),

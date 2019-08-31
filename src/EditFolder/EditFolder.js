@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditFolder.css';
 import ApiContext from '../ApiContext';
-// import config from '../config'
 
 export default class EditFolder extends Component {
-
 
     static propTypes = {
         match: PropTypes.shape({
@@ -16,18 +14,18 @@ export default class EditFolder extends Component {
         }).isRequired,
       };
 
-    static contextType = ApiContext
-
     state = {
         error: null,
-        name: ''
-      };
-    
+        id: "",
+        name: ""
+    };
+
+    static contextType = ApiContext
+     
     componentDidMount() {
 
     const folderId = this.props.match.params.folderId
-    // console.log(this.props.match.params.folderId)
-
+   
     fetch(`http://localhost:8000/api/folders/${folderId}`, { method: 'GET'})
         .then(res => {
         if(!res.ok) {
@@ -36,8 +34,10 @@ export default class EditFolder extends Component {
         return res.json();
         })  
     .then(data => {
+        console.log(data.id)
          this.setState({
-                 name: data.name
+            id: data.id,
+            name: data.name
          })
         })
     .catch(err => {
@@ -53,10 +53,15 @@ export default class EditFolder extends Component {
 
     handleSubmit = e => {
         e.preventDefault()
+        const folderName = e.target.name.value
+       
+        this.setState ({
+           name: folderName
+        })
 
         const  folderId  = this.props.match.params.folderId
-        const  name  = this.state.name
-        const newFolder =  {name}
+        const  {id, name }  = this.state
+        const newFolder =  {id, name}
         const url = `http://localhost:8000/api/folders/${folderId}`
         const options = {
             method: 'PATCH',
@@ -75,16 +80,15 @@ export default class EditFolder extends Component {
             this.context.updateFolder(newFolder)
             this.props.history.push('/')
         })
-     .catch(err => {
-        this.setState({
-            error: err.message
+        .catch(err => {
+            this.setState({
+                error: err.message
             });
         })
 }
 
 render() {
     const { name } = this.state
- 
     return (
       <section className='EditFolder'>
         <h2>Edit Folder</h2>

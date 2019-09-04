@@ -21,16 +21,26 @@ getNotes = (folders = []) => {
       folder.notes = folder.notes || []
       if (folder.notes.length) {
         folder.notes.forEach(note =>
-        newNotes.push(note)  
+        { note.folder = folder.id
+          newNotes.push(note)  
+        }
         )}   
     } 
     )
+    console.log(newNotes)
     return newNotes
-  }
+}
+
+getNotesForFolder = (folders = [], folderId) => {
+  console.log(folderId)
+  return (!folderId)
+    ? this.getNotes(folders)
+    : this.getNotes(folders).filter(note => note.folder === +folderId)
+}
 
   render() {
     const { folders=[] } = this.context
-    const notes =  this.getNotes(folders) || []
+    const notes =  this.getNotesForFolder(folders, this.props.match.params.folderId) || []
 
     return (
       <section className='NoteListMain'>

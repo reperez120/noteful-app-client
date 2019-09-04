@@ -9,6 +9,7 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import EditNote from '../EditNote/EditNote';
 import EditFolder from '../EditFolder/EditFolder';
+import Folder from '../Folder/Folder';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css'
@@ -131,28 +132,30 @@ class App extends Component {
                 <Route path="/note/:noteId" component={NotePageNav}/>
                 <Route path="/add-folder" component={NotePageNav}/>
                 <Route path="/add-note" component={NotePageNav}/>
-                <Route path="/folder/:folderId" component={NotePageNav}/>
             </>
         );
     }
 
     renderMainRoutes() {
+        const notes  = this.state.folders.notes
         return (
+
             <>
-                {['/', '/folder/:folderId'].map(path => (
+               {['/', '/folder/:folderId'].map(path => (
                     <Route
                         exact
                         key={path}
                         path={path}
                         component={NoteListMain}
                     />
-                ))}
+                ))} 
                 <Route path='/note/:noteId'component={NotePageMain}/>
                 <Route path='/add-folder' component={AddFolder}/>
                 <Route path='/add-note'component={AddNote}/>
                 <Route path='/folders/:folderId/edit' component={EditFolder}/> 
                 <Route path='/notes/:noteId/edit' component={EditNote}/> 
             </>
+            
         );
     }
 

@@ -54,11 +54,12 @@ class AddNote extends Component {
         if(!res.ok) {
           throw new Error('Something went wrong, please try again later');
         }
-        return res
+        return res.json()
       })
-      .then(() => {
+      .then((data) => {
+        console.log(data)
       let folders = this.context.folders
-      this.context.addNote(folders, note)
+      this.context.addNote(folders, data)
         this.props.history.push('/')
       })
       .catch(err => {

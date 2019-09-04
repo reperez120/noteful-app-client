@@ -1,7 +1,7 @@
 import React from 'react';
 import AddButton from '../AddButton/AddButton';
 import ApiContext from '../ApiContext';
-import { findNote } from '../notes-helpers';
+// import { findNote } from '../notes-helpers';
 import NotefulError from '../NotefulError';
 import './NotePageNav.css'
 
@@ -19,19 +19,13 @@ export default class NotePageNav extends React.Component {
  findFolder = (folders=[], folderId) =>
   folders.find(folder => folder.id === folderId)
 
-  // findNote = (notes=[], noteId) => 
-  // notes.find(note => note.id === Number(noteId))
-
-
-
-//  findFolder = (folders=[], folderId) => {
-  // folders.find(folder => +folder.id === +folderId)
-//  }
+  findNote = (notes=[], noteId) => 
+  notes.find(note => note.id === Number(noteId))
 
   render() {
     const notes = []
     const { noteId } = this.props.match.params
-    const note = findNote(notes, noteId) || {}
+    const note = this.findNote(notes, noteId) || {}
     const folder = this.findFolder(this.context.folders, note.folder)
    
     return (

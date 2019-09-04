@@ -27,12 +27,10 @@ getNotes = (folders = []) => {
         )}   
     } 
     )
-    console.log(newNotes)
     return newNotes
 }
 
 getNotesForFolder = (folders = [], folderId) => {
-  console.log(folderId)
   return (!folderId)
     ? this.getNotes(folders)
     : this.getNotes(folders).filter(note => note.folder === +folderId)

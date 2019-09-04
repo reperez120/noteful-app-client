@@ -9,7 +9,6 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import EditNote from '../EditNote/EditNote';
 import EditFolder from '../EditFolder/EditFolder';
-// import Folder from '../Folder/Folder';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css'

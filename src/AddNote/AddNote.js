@@ -57,7 +57,6 @@ class AddNote extends Component {
         return res.json()
       })
       .then((data) => {
-        console.log(data)
       let folders = this.context.folders
       this.context.addNote(folders, data)
         this.props.history.push('/')
@@ -142,7 +141,7 @@ AddNote.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    modified: PropTypes.number.isRequired,
+    modified: PropTypes.string.isRequired,
   })) 
 };
 

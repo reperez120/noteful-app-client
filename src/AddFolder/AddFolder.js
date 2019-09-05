@@ -44,8 +44,8 @@ class AddFolder extends Component {
         }
         return res.json();
       })
-      .then(data => {
-        this.context.addFolder(folder)
+      .then((data) => {
+        this.context.addFolder(data)
         this.props.history.push('/')
       })
       .catch(err => {

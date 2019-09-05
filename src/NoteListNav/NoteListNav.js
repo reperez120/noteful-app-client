@@ -41,18 +41,6 @@ export default class NoteListNav extends React.Component {
        folder.notes = folder.notes || []
        if (folder.notes.length) {
           let length = folder.notes.length
-          console.log(length)
-          return length
-       }
-    })
-  }
-
-  countNotes = (folders) => {
-    if (!folders.length) return folders
-     folders.forEach(folder => {
-       folder.notes = folder.notes || []
-       if (folder.notes.length) {
-          let length = folder.notes.length
           return length
        }
     })

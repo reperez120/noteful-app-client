@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
 import './AddNote.css';
+import config from '../config';
 
 class AddNote extends Component {
 
@@ -49,7 +50,7 @@ class AddNote extends Component {
       body: JSON.stringify(note)
     }
     this.setState({ error: null })
-    fetch('http://localhost:8000/api/notes', options)
+    fetch(`${config.API_ENDPOINT}/api/notes`, options)
       .then(res => {
         if(!res.ok) {
           throw new Error('Something went wrong, please try again later');

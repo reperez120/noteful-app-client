@@ -4,7 +4,7 @@ import AddButton from '../AddButton/AddButton'
 import ApiContext from '../ApiContext'
 import './NoteListNav.css'
 import PropTypes from 'prop-types'
-import config from '../config'
+import config from '../config';
 
 export default class NoteListNav extends React.Component {
   static defaultProps = {

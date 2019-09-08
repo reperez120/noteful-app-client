@@ -4,7 +4,7 @@ import Note from '../Note/Note';
 import AddButton from '../AddButton/AddButton';
 import ApiContext from '../ApiContext';
 import NotefulError from '../NotefulError';
-import './NoteListMain.css'
+import './NoteListMain.css';
 
 export default class NoteListMain extends React.Component {
   static defaultProps = {

@@ -78,7 +78,7 @@ class App extends Component {
                 if (!foldersRes.ok)
                     return foldersRes.json().then(e => Promise.reject(e));
                     
-                    return Promise.all([notesRes.json(), foldersRes.json()]);
+                return Promise.all([notesRes.json(), foldersRes.json()]);
             })
             .then(([notes, folders]) => {
                const data = this.mergeFoldersAndNotes(folders, notes)

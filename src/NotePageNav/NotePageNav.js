@@ -1,9 +1,8 @@
 import React from 'react';
 import AddButton from '../AddButton/AddButton';
 import ApiContext from '../ApiContext';
-// import { findNote } from '../notes-helpers';
 import NotefulError from '../NotefulError';
-import './NotePageNav.css'
+import './NotePageNav.css';
 
 export default class NotePageNav extends React.Component {
   static defaultProps = {

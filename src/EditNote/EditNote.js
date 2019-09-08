@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditNote.css';
 import ApiContext from '../ApiContext';
+import config from '../config';
  
 export default class EditNote extends Component {
     
@@ -30,7 +31,7 @@ export default class EditNote extends Component {
  
     const noteId  = this.props.match.params.noteId
 
-   fetch(`http://localhost:8000/api/notes/${noteId}`, { method: 'GET'})
+   fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, { method: 'GET'})
        .then(res => {
        if(!res.ok) {
            throw new Error('Something went wrong, please try again later');
@@ -77,7 +78,7 @@ export default class EditNote extends Component {
        const { id, name, content, folder } = this.state
        const newNote = { id, name, content, folder }
        
-       const url = `http://localhost:8000/api/notes/${noteId}`
+       const url = `${config.API_ENDPOINT}/${noteId}`
        const options = {
            method: 'PATCH',
             headers: {

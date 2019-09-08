@@ -4,7 +4,8 @@ import NotefulError from '../NotefulError';
 import PropTypes from 'prop-types';
 import './AddFolder.css';
 import { withRouter } from 'react-router-dom';
-import ApiContext from '../ApiContext'
+import ApiContext from '../ApiContext';
+import config from '../config';
 
 class AddFolder extends Component {
 
@@ -27,7 +28,7 @@ class AddFolder extends Component {
     const folder = {
       name: name.value
     }
-    const url = 'http://localhost:8000/api/folders'
+    const url = '${config.API_ENDPOINT}/api/folders'
     
     const options = {
     method: 'POST',

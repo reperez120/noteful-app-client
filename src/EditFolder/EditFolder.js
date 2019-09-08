@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './EditFolder.css';
 import ApiContext from '../ApiContext';
+import config from '../config';
 
 export default class EditFolder extends Component {
 
@@ -26,7 +27,7 @@ export default class EditFolder extends Component {
 
     const folderId = this.props.match.params.folderId
    
-    fetch(`http://localhost:8000/api/folders/${folderId}`, { method: 'GET'})
+    fetch(`${config.API_ENDPOINT}/api/folders/${folderId}`, { method: 'GET'})
         .then(res => {
         if(!res.ok) {
             throw new Error('Something went wrong, please try again later');
@@ -61,7 +62,7 @@ export default class EditFolder extends Component {
         const  folderId  = this.props.match.params.folderId
         const  {id, name }  = this.state
         const newFolder =  {id, name}
-        const url = `http://localhost:8000/api/folders/${folderId}`
+        const url = `${config.API_ENDPOINT}/api/folders/${folderId}`
         const options = {
             method: 'PATCH',
              headers: {

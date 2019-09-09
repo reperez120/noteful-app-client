@@ -78,7 +78,7 @@ export default class EditNote extends Component {
        const { id, name, content, folder } = this.state
        const newNote = { id, name, content, folder }
        
-       const url = `${config.API_ENDPOINT}/${noteId}`
+       const url = `${config.API_ENDPOINT}/api/notes/${noteId}`
        const options = {
            method: 'PATCH',
             headers: {

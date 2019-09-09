@@ -28,7 +28,7 @@ class AddFolder extends Component {
     const folder = {
       name: name.value
     }
-    const url = '${config.API_ENDPOINT}/api/folders'
+    const url = `${config.API_ENDPOINT}/api/folders`
     
     const options = {
     method: 'POST',

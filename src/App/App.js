@@ -102,6 +102,7 @@ class App extends Component {
 
     updateNote = editedNote => {
         const folderIndex = this.state.folders.findIndex(folder => folder.id === +editedNote.folder)
+        console.log(editedNote.folder)
         const folder = this.state.folders[folderIndex]
         const noteIndex = folder.notes.findIndex(n => n.id === editedNote.id)
         let note = folder.notes[noteIndex]
